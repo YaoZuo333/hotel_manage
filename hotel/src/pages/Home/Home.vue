@@ -13,17 +13,17 @@
   <div class="home">
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <img src="../../../static/img/home_1.jpg" alt="" width="1200px" height="600px">
+        <div class="swiper-slide" >
+          <img src="../../../static/img/home_1.jpg" alt="">
         </div>
         <div class="swiper-slide">
-          <img src="../../../static/img/home_2.jpg" alt="" width="1200px" height="600px">
+          <img src="../../../static/img/home_2.jpg" alt="">
         </div>
         <div class="swiper-slide">
-          <img src="../../../static/img/home_3.jpg" alt="" width="1200px" height="600px">
+          <img src="../../../static/img/home_3.jpg" alt="">
         </div>
         <div class="swiper-slide">
-          <img src="../../../static/img/home_4.jpg" alt="" width="1200px" height="600px">
+          <img src="../../../static/img/home_4.jpg" alt="">
         </div>
         <div class="swiper-slide">
           <img src="../../../static/img/home_5.jpg" alt="" width="1200px" height="600px">
@@ -82,46 +82,12 @@
 
 <style scoped lang="stylus" ref="stylesheet/stylus">
   .home
-    height auto
-    .YzCarousel {
-      background-color: skyblue;
-      //width: 1150px;
-      // height: 600px;
-      position: relative;
-      .YzCarousel-item {
-        display: none;
-      }
-      .carousel-burster {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        z-index: 15;
-        width: 60%;
-        padding-left: 0;
-        margin-left: -30%;
-        text-align: center;
-        list-style: none;
-      }
-      .carousel-burster li {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        margin: 1px;
+    height 100%
+  .swiper-slide img{
+    height 800px
+    width 100%
+  }
 
-        cursor: pointer;
-        background-color: #000 \9;
-        background-color: rgba(0, 0, 0, 0);
-        border: 1px solid #fff;
-        border-radius: 10px;
-
-      }
-      .carousel-burster .active {
-        width: 12px;
-        height: 12px;
-        margin: 0;
-        background-color: red;
-      }
-    }
   /*.home_content
     position relative
 

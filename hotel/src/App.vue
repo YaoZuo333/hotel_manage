@@ -46,7 +46,8 @@ export default {
 
 <style>
   body{
-    background-color: #d2c8c8;
+    /*background-color: #d2c8c8;*/
+    background: rgba(184,167,143,.7);
   }
 
 #app {
@@ -61,9 +62,9 @@ export default {
   .app-content{
     width: 75vw;
     height: 83vh;
-    border: red solid 1px;
+    /*border: red solid 1px;*/
     margin-left: 20vw;
-    margin-top: 0.5%;
+    margin-top: 20px;
     position: absolute;
     top: 8vh;
   }

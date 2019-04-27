@@ -166,7 +166,7 @@
         showUpdata(flag,info){
           this.isUpdata = flag;
           this.changeInfo = info;
-          console.log(this.changeInfo);
+          //console.log(this.changeInfo);
         },
           showAdd(flag){
             this.isAdd = flag;

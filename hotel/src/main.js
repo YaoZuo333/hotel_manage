@@ -6,12 +6,24 @@ import router from './router'
 import store from './store'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import moment from 'moment'//导入文件
+
+Vue.prototype.$moment = moment;//赋值使用
+Vue.filter('datefmt',function(input,fmtstring){
+
+  return moment(input).format(fmtstring)
+
+});
 
 /*import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css'
 
 Vue.use(Mint);*/
 Vue.use(iView);
+Vue.use(ElementUI);
+
 
 
 Vue.config.productionTip = false;

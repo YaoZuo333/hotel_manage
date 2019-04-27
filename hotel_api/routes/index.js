@@ -518,4 +518,264 @@ router.post('/api/change_staff',(req,res)=>{
 
 });
 
+/*添加订单信息*/
+router.post('/api/add_order',(req,res)=>{
+    // 1. 获取数据
+    const type = req.body.type;
+    const start = req.body.start;
+    const end = req.body.end ;
+    const userId = req.body.userId;
+    const price = req.body.price;
+    const number = req.body.number;
+    const total = req.body.total;
+    const others = req.body.others;
+    //console.log("000000000000");
+    //console.log(name);
+
+    let addSql = "INSERT INTO hotel_order(order_type,order_startdate,order_enddate,u_id,order_price,order_number,order_total,order_state,order_others) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const addparmas = [type,start,end,userId,price,number,total,"未处理", others];
+    console.log(addparmas);
+    conn.query(addSql,addparmas,(err,results,fields)=>{
+        if (err){
+            res.json({err_code:0,message:'查询数据库失败'+err});
+        }else {
+            results = JSON.parse(JSON.stringify(results));
+            console.log(results);
+            res.json({success_code:200,message:"订单预订成功"});
+        }
+    })
+
+});
+
+/*获取个人订单信息*/
+router.get('/api/get_self_order',(req,res)=>{
+    let userId = req.query.userId;
+    console.log(userId);
+    let sqlStr = "SELECT * FROM hotel_order WHERE u_id = '" + userId + "'";
+
+    conn.query(sqlStr, (error, results, fields) => {
+        if (error) {
+            res.json({err_code: 0, message: '请求数据失败',error});
+        } else {
+            // 返回数据给客户端
+            results = JSON.parse(JSON.stringify(results));
+            res.json({success_code: 200, message: results});
+        }
+    });
+});
+
+/*管理员获取所有订单信息*/
+router.get('/api/get_all_order',(req,res)=>{
+
+    let sqlStr = "SELECT * FROM hotel_order";
+
+    conn.query(sqlStr, (error, results, fields) => {
+        if (error) {
+            res.json({err_code: 0, message: '请求数据失败',error});
+        } else {
+            // 返回数据给客户端
+            results = JSON.parse(JSON.stringify(results));
+            res.json({success_code: 200, message: results});
+        }
+    });
+});
+
+
+router.get('/api/get_order_user',(req,res)=>{
+    let userId = req.query.userId;
+    //console.log(userId);
+    //console.log(req.session,"3333333333");
+    let sqlStr = "SELECT * FROM hotel_user WHERE user_Id = '" + userId + "' LIMIT 1";
+    conn.query(sqlStr,(err,results,feilds)=>{
+        if (err) {
+            res.json({err_code: 0, message: '查询数据库失败!'});
+        } else {
+            results = JSON.parse(JSON.stringify(results));
+                res.json({
+                    success_code: 200,
+                    message: {id: results[0].user_Id, user_name: results[0].user_name, user_phone: results[0].user_phone,user_sex: results[0].user_sex}
+                });
+            }
+    })
+});
+
+
+/*修改房间状态*/
+router.get('/api/updata_room',(req,res)=>{
+    let state;
+    let roomIdLis = req.query.roomStr.split(',');
+    let orderId = req.query.orderId;
+    console.log(roomIdLis);
+    if (req.query.roomState !== "undefined"){
+        state = req.query.roomState;
+    } else {
+        state = '已预订'
+    }
+    console.log(state);
+
+    let queryStr = "SELECT * FROM hotel_room WHERE room_id in ("+roomIdLis+") AND room_state != '空闲'";
+
+    conn.query(queryStr,(err,results,feilds)=>{
+        if (err){
+            res.json({err_code: 101, message: '查询数据库失败!'});
+        } else {
+            results = JSON.parse(JSON.stringify(results))[0];
+            if (results) {
+                res.json({err_code:102,message:'该房间不是空闲状态！请重新分配'})
+            }else {
+                let sqlStr = "UPDATE hotel_room SET room_state = '"+state+"' ,room_orderId = '"+orderId+"'WHERE room_id in ("+roomIdLis+")";
+
+                conn.query(sqlStr,(err,results,feilds)=>{
+                    if (err) {
+                        res.json({err_code: 0, message: '查询数据库失败!'});
+                    } else {
+                        res.json({
+                            success_code: 200,
+                            message: "房间状态更新成功"
+                        });
+                    }
+                })
+            }
+        }
+    });
+
+});
+
+/*房间管理页面修改房间状态*/
+router.get('/api/chang_room_state',(req,res)=>{
+    let state = req.query.roomstate;
+    let roomid = req.query.roomid;
+
+    console.log(state);
+    if (state == '空闲'){
+        let sqlStr = "UPDATE hotel_room SET room_state = '"+state+"' ,room_orderId = ' ' WHERE room_id = '"+ roomid+"'";
+        conn.query(sqlStr,(err,results,feilds)=>{
+            if (err){
+                res.json({err_code:102,message:'更新房间信息失败'+err})
+            } else {
+                res.json({
+                    success_code: 200,
+                    message: "房间状态更新成功"
+                });
+            }
+        })
+    } else {
+        let sqlStr = "UPDATE hotel_room SET room_state = '"+state+"' WHERE room_id = '"+ roomid+"'";
+        conn.query(sqlStr,(err,results,feilds)=>{
+            if (err){
+                res.json({err_code:102,message:'更新房间信息失败'+err})
+            } else {
+                res.json({
+                    success_code: 200,
+                    message: "房间状态更新成功"
+                });
+            }
+        })
+    }
+
+});
+
+
+/*查询可分配*/
+router.get('/api/get_free_room',(req,res)=>{
+    let type = req.query.type;
+    console.log(type);
+    let queryStr = "SELECT room_id FROM hotel_room WHERE room_type = '"+type+"' AND room_state = '空闲'";
+
+    conn.query(queryStr,(err,results,feilds)=>{
+        if (err){
+            console.log(err);
+            res.json({err_code: 101, message: '查询数据库失败!'});
+        } else {
+            res.json({success_code:200,message:results});
+
+        }
+    });
+
+});
+
+/*修改订单状态*/
+router.get('/api/updata_order',(req,res)=>{
+    let orderId = req.query.orderId;
+    let state = req.query.orderState;
+    let roomIdStr = req.query.roomIdStr;
+
+    let sqlStr = "UPDATE hotel_order SET order_state = '"+state+"',order_roomId = '"+ roomIdStr+ "' WHERE order_id  = '"+orderId+"'";
+
+    conn.query(sqlStr,(err,results,feilds)=>{
+        if (err) {
+            res.json({err_code: 0, message: '查询数据库失败!'});
+        } else {
+            res.json({
+                success_code: 200,
+                message: "订单状态更新成功"
+            });
+        }
+    })
+});
+
+/*管理员获取所有客房信息*/
+router.get('/api/get_all_room',(req,res)=>{
+
+    let sqlStr = "SELECT * FROM hotel_room";
+
+    conn.query(sqlStr, (error, results, fields) => {
+        if (error) {
+            res.json({err_code: 0, message: '请求数据失败',error});
+        } else {
+            // 返回数据给客户端
+            results = JSON.parse(JSON.stringify(results));
+            res.json({success_code: 200, message: results});
+        }
+    });
+});
+
+/*获取年销售额*/
+router.get('/api/get_year_total',(req,res)=>{
+
+    let sqlStr = "SELECT DATE_FORMAT(order_enddate,'%Y') days,sum(order_total) order_total from hotel_order WHERE order_state = '已付款' group by days ;";
+
+    conn.query(sqlStr, (error, results, fields) => {
+        if (error) {
+            res.json({err_code: 0, message: '请求数据失败',error});
+        } else {
+            // 返回数据给客户端
+            results = JSON.parse(JSON.stringify(results));
+            res.json({success_code: 200, message: results});
+        }
+    });
+});
+
+/*获取月份销售额*/
+router.get('/api/get_month_data',(req,res)=>{
+    let year = req.query.year;
+    let sqlStr = "SELECT DATE_FORMAT(order_enddate,'%Y-%m') days,sum(order_total) order_total from hotel_order WHERE order_state = '已付款' AND order_enddate LIKE '"+year+"%'  group by days  ;";
+
+    conn.query(sqlStr, (error, results, fields) => {
+        if (error) {
+            res.json({err_code: 0, message: '请求数据失败',error});
+        } else {
+            // 返回数据给客户端
+            results = JSON.parse(JSON.stringify(results));
+            res.json({success_code: 200, message: results});
+        }
+    });
+});
+
+/*按日获取销售额*/
+router.get('/api/get_days_data',(req,res)=>{
+    let month = req.query.month;
+    let sqlStr = "SELECT DATE_FORMAT(order_enddate,'%Y-%m-%d') days,sum(order_total) order_total from hotel_order WHERE order_state = '已付款' AND order_enddate LIKE '"+month+"%'  group by days  ;";
+
+    conn.query(sqlStr, (error, results, fields) => {
+        if (error) {
+            res.json({err_code: 0, message: '请求数据失败',error});
+        } else {
+            // 返回数据给客户端
+            results = JSON.parse(JSON.stringify(results));
+            res.json({success_code: 200, message: results});
+        }
+    });
+});
+
 module.exports = router;

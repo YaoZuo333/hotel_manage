@@ -1,5 +1,6 @@
-import {USER_INFO,RESET_USER_INFO,STAFF_INFO} from './mutation-types'
+import {USER_INFO,RESET_USER_INFO,STAFF_INFO,BOOKING_DATE,INIT_BOOKING,} from './mutation-types'
 import {getUserInfo,getLogout,getStaffInfo} from './../api/index'
+import {BOOKING_NUMBER} from "./mutation-types";
 
 export default {
   //同步用户信息
@@ -31,4 +32,16 @@ export default {
       commit(STAFF_INFO, {staffInfo: result.message});
     }
   },
+  //初始化订房
+  initBooking({commit},obj){
+    commit(INIT_BOOKING,{obj})
+  },
+  //同步订房时间
+  postBookingDate({commit},date){
+    commit(BOOKING_DATE,{date})
+  },
+  //同步订房数量和总价
+  postBookingNumber({commit},obj){
+    commit(BOOKING_NUMBER,{obj})
+  }
 }

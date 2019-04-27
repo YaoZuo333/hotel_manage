@@ -8,22 +8,29 @@
           酒店介绍
         </li>
         <li :class="{active:show == 2}" @click="tabbarSelect('/room',2)">
-          房间预订
+          客房服务
         </li>
-        <li :class="{active:show == 3}" @click="tabbarSelect('/staff',3)">
+        <li :class="{active:show == 3}" @click="tabbarSelect('/staff',3)" v-if="this.userInfo.user_position =='管理员'">
           人力资源
         </li>
         <li :class="{active:show == 4}" @click="tabbarSelect('/member',4)">
-          会员中心
+          个人信息
         </li>
-        <li :class="{active:show == 5}" @click="tabbarSelect('/marketStatistics',5)">
-          营销统计
+        <li :class="{active:show == 6}" @click="tabbarSelect('/ordemanage',6)" v-if="this.userInfo.user_position =='管理员'">
+          订单管理
+        </li>
+        <li :class="{active:show == 6}" v-else @click="tabbarSelect('/orderself',6)">
+          我的订单
+        </li>
+        <li :class="{active:show == 5}" @click="tabbarSelect('/manageroom',5)" v-if="this.userInfo.user_position =='管理员'">
+          房间管理
         </li>
       </ul>
     </div>
 </template>
 
 <script>
+  import {mapState} from 'vuex'
     export default {
         name: "LeftTab",
       data(){
@@ -32,7 +39,7 @@
           }
       },
       computed:{
-
+        ...mapState(['userInfo'])
       },
       methods:{
         tabbarSelect(path,index){

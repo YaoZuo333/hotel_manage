@@ -218,7 +218,7 @@
             }
           }
             // 6.2 回到主界面
-            this.$router.push('/member');
+            this.$router.push('/');
           }
       }
   }

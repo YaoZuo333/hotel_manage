@@ -136,6 +136,7 @@
       width 100%
       height 60%px
       line-height 60px
+      font-size 20px
       padding-left 10px
       font-weight bold
     .user-detail-group
