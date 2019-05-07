@@ -209,6 +209,7 @@
           console.log(result);
           if (result.success_code == 200){
               this.sessionStaffInfo();
+              this.$Message.success("移除员工成功")
           }
         },
         /*

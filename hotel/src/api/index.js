@@ -14,12 +14,12 @@ export const pwdLogin = (userNmae,pwd,captcha)=>ajax(BASE_URL + '/api/login_pwd'
 
 export const postRgeister = (userPhone,userName,userAge,userPsw,userSex)=>ajax(BASE_URL + '/api/rgeister_post',{userPhone,userName,userAge,userPsw,userSex},'POST');
 
-export const changeUserInfo = (user_id, user_name, user_sex, user_address, user_birthday) => ajax(BASE_URL + '/api/change_user_msg', {
+export const changeUserInfo = (user_id, user_name, user_sex, user_address, user_age) => ajax(BASE_URL + '/api/change_user_msg', {
   user_id,
   user_name,
   user_sex,
   user_address,
-  user_birthday
+  user_age
 }, 'POST');
 
 // 2.9 获取登录的用户信息

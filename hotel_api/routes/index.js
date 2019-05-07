@@ -283,15 +283,15 @@ router.post('/api/change_user_msg',(req,res)=>{
     const user_name = req.body.user_name || '';
     const user_sex = req.body.user_sex || '';
     const user_address = req.body.user_address || '';
-    const user_birthday = req.body.user_birthday || '';
+    const user_age = req.body.user_age || '';
     //console.log("000000000000");
 
     if (!id){
         res.json({err_code:0,message:'用户ID错误'})
     }
 
-    let sqlStr = "UPDATE hotel_user SET user_name = ? , user_sex = ?, user_address = ?, user_birthday = ? WHERE user_Id = " + id;
-    let strParams = [user_name, user_sex, user_address, user_birthday];
+    let sqlStr = "UPDATE hotel_user SET user_name = ? , user_sex = ?, user_address = ?, user_age = ? WHERE user_Id = " + id;
+    let strParams = [user_name, user_sex, user_address, user_age];
     console.log(id);
     conn.query(sqlStr,strParams,(err,results,fields)=>{
         if (err){

@@ -29,10 +29,10 @@
               <span>常住地</span>
               <span><input type="text" v-model="user_address"></span>
             </div>
-            <div class="user-item" @click="$refs.picker.open()">
-              <span>生日</span>
+            <div class="user-item">
+              <span>年龄</span>
               <span>
-                <input type="date" min="1900-01-01" max="2019-03-28" v-model="user_birthday"/>
+                <input type="text" maxlength="18" v-model="user_age" oninput="value=value.replace(/[^\d]/g,'')"/>
               </span>
             </div>
             <button @click="saveUserInfo">修改</button>
@@ -58,7 +58,7 @@
           user_sex: '',
           user_phone: '',
           user_birthday: '',
-
+          user_age: '',
           // 2. 性别
           sheetVisible: false,
           actions: [
@@ -88,14 +88,14 @@
         async saveUserInfo(){
           // 3.1 请求接口
           //console.log(this.userInfo.id);
-          let result = await changeUserInfo(this.userInfo.id, this.user_name, this.user_sex, this.user_address, this.user_birthday, this.user_sign);
+          let result = await changeUserInfo(this.userInfo.id, this.user_name, this.user_sex, this.user_address, this.user_age, this.user_sign);
           // console.log(result);
           // 3.2 提示用户
-          Toast({
-            message: result.message,
-            position: 'bottom',
-            duration: 2000
-          });
+          if (result.success_code === 200){
+            this.$Message.success("修改个人信息成功")
+          } else {
+            this.$Message.error("修改失败")
+          }
           // 3.3 返回主界面
           if(result.success_code === 200){
             // 3.4 更新本地数据
@@ -108,21 +108,23 @@
         },
         dealLogout() {
           // console.error(11);
-          MessageBox.confirm('您确定退出登录吗?').then(action => {
-            // console.log(action);
-            if('confirm' === action){
-              // 退出登录
-              let result = this.logOut({});
-              let storage=window.sessionStorage;
-              storage.removeItem('userInfo');
-              // console.log(result);
-              // 回到主界面
-              this.$router.replace('/home');
-            }
-          });
+          this.$confirm('确定要退出登录?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            let result = this.logOut({});
+            let storage=window.sessionStorage;
+            storage.removeItem('userInfo');
+            this.$message({
+              type: 'success',
+              message: '退出成功!'
+            });
+              this.$router.push('/home');
+            })
+          }
         }
       }
-    }
 </script>
 
 <style scoped lang="stylus" ref="stylesheet/stylus">

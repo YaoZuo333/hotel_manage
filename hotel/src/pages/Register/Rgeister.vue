@@ -13,7 +13,11 @@
         </section>
         <section class="age">
           <!--<span>年龄:</span>-->
-          <input type="text" maxlength="18" placeholder="请输入年龄" v-model="userAge"/>
+          <input type="text" maxlength="18" placeholder="请输入年龄" v-model="userAge" oninput="value=value.replace(/[^\d]/g,'')"/>
+        </section>
+        <section class="age">
+          <!--<span>年龄:</span>-->
+
         </section>
         <section class="passworld">
           <!--<span>密码:</span>-->
@@ -68,18 +72,21 @@
         //注册
         async rgeister(){
           if (!this.userPhone) {
-            Toast("请输入手机号");
+            this.$Message.warning("请输入手机号");
             return;
           }else if (!this.phoneRight) {
-            Toast("请输入正确的手机号");
+            this.$Message.warning("请输入正确的手机号");
             return;
           }
           if (!this.userPsw) {
-            Toast("请输入密码");
+            this.$Message.warning("请输入密码");
             return;
           }else if (!this.pwdRight) {
             Toast("请确定两次输入相同的密码");
             return;
+          }
+          if (!this.userAge){
+            this.$Message.warning("年龄不能为空！")
           }
           //发送注册请求
           const result = await postRgeister(this.userPhone,this.userName,this.userAge,this.userPsw,this.userSex);

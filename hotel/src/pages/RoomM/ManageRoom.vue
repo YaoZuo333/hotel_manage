@@ -176,9 +176,13 @@
         },
         async updataRoom(roomid,roomstate){
             const result = await changRoomState(roomid,roomstate);
-            if (result.success_code !== 200){
-              alert("修改房间状态失败，请重试")
+            if (result.success_code === 200){
+              this.$Message.success("修改房间状态成功");
+            }else {
+              this.$Message.error(result.message);
+              return ;
             }
+            this.allRoom();
         }
       },
       created(){

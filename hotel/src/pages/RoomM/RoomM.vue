@@ -137,13 +137,13 @@
       height 50%
       background-color: #272727
       color #949449
-      line-height 50px
+      line-height 60px
       .room-inneritem
         display inline-block
         width 50%
         height 80%
         margin-top 2.5%
-        font-size 20px
+        font-size 30px
         background-color: #3C3C3C
         border-radius 5px
       span:hover
@@ -153,14 +153,14 @@
         background-color: #336666!important;
   .room-body
     width 100%
-    background-color: #fff
+    background: rgba(184,167,143,1);
     img
       margin-top 20px
       height 580px
   .room-footer
     width 100%
     height 200px
-    background-color: #fff
+    background: rgba(184,167,143,1);
     .room-description
       width 100%
       height 30%
