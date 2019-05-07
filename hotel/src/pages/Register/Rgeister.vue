@@ -14,10 +14,13 @@
         <section class="age">
           <!--<span>年龄:</span>-->
           <input type="text" maxlength="18" placeholder="请输入年龄" v-model="userAge" oninput="value=value.replace(/[^\d]/g,'')"/>
+<<<<<<< HEAD
         </section>
         <section class="age">
           <!--<span>年龄:</span>-->
 
+=======
+>>>>>>> 2bcfea984f423a995a98b7c2899d7b3e833b5835
         </section>
         <section class="passworld">
           <!--<span>密码:</span>-->
