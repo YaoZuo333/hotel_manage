@@ -33,7 +33,7 @@
             pickerOptions0: {
               disabledDate: (time) => {
                 if (this.endDate !== "") {
-                  return time.getTime() <= Date.now() || time.getTime() < this.endDate;
+                  return time.getTime() <= Date.now() || time.getTime() > this.endDate;
                 } else {
                   return time.getTime() <= Date.now();
                 }
@@ -41,7 +41,7 @@
             },
             pickerOptions1: {
               disabledDate: (time) => {
-                return time.getTime() < this.startDate || time.getTime() < Date.now();
+                return time.getTime() < Date.now() || time.getTime() < this.startDate;
               }
             },
           }

@@ -29,10 +29,10 @@
             <section class="login-verification">
               <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
             </section>
-            <section class="login-hint">
+            <!--<section class="login-hint">
               温馨提示：未注册YZ酒店帐号的手机号，登录时将自动注册，且代表已同意
               <a href="javascript:;">服务协议与隐私政策</a>
-            </section>
+            </section>-->
           </div>
           <!--账号登录部分-->
           <div :class="{current: !loginMode}">
@@ -118,6 +118,11 @@
           // 2.2 获取短信验证码
           let result = await getPhoneCode(this.phone);
           console.log(result);
+          if (result.success_code === 200){
+            this.$Message.success(result.message);
+          } else {
+            this.$Message.error("请求验证码失败");
+          }
 
           // 2.3 获取验证码失败
           if (result.err_code === 0) {
@@ -151,18 +156,18 @@
           if (this.loginMode) { // 验证码登录
             // 5.2 前台校验
             if (!this.phone) {
-              Toast("请输入手机号码!");
+              this.$Message.warning("请输入手机号码!");
               return;
             } else if (!this.phoneRight) {
-              Toast("请输入正确手机号码!");
+              this.$Message.warning("请输入正确手机号码!");
               return;
             }
 
             if (!this.code) {
-              Toast("请输入验证码!");
+              this.$Message.warning("请输入验证码!");
               return;
             } else if (!(/^\d{6}$/gi.test(this.code))) {
-              Toast("请输入正确的验证码!");
+              this.$Message.warning("请输入正确的验证码!");
               return;
             }
             // 5.3 手机验证码登录
@@ -170,21 +175,23 @@
             console.log(result);
             if (result.success_code === 200) {
               this.userInfo = result.message;
+              this.$Message.success("登录成功");
             } else {
               this.userInfo = {
                 message: '登录失败, 手机号或验证码不正确!'
               };
+              this.$Message.error("登录失败")
             }
           } else { // 账号和密码登录
             // 5.4 前端校验
             if (!this.user_name) {
-              Toast("请输入用户名/手机/邮箱!");
+              this.$Message.warning("请输入用户名/手机/邮箱!");
               return;
             } else if (!this.pwd) {
-              Toast("请输入密码!");
+              this.$Message.warning("请输入密码!");
               return;
             }else if (!this.captcha) {
-              Toast("请输入验证码!");
+              this.$Message.warning("请输入验证码!");
               return;
             }
             // 5.5 用户名和密码的登录
@@ -192,11 +199,13 @@
             console.log(result);
             if (result.success_code === 200) {
               this.userInfo = result.message;
+              this.$Message.success("登录成功!");
               console.log(this.userInfo);
             } else {
               this.userInfo = {
                 message: '登录失败, 手机号或验证码不正确!'
               };
+              this.$Message.err("登录失败, 手机号或验证码不正确!");
             }
           }
           // 6. 后续处理

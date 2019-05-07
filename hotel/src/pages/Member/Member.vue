@@ -108,21 +108,23 @@
         },
         dealLogout() {
           // console.error(11);
-          MessageBox.confirm('您确定退出登录吗?').then(action => {
-            // console.log(action);
-            if('confirm' === action){
-              // 退出登录
-              let result = this.logOut({});
-              let storage=window.sessionStorage;
-              storage.removeItem('userInfo');
-              // console.log(result);
-              // 回到主界面
-              this.$router.replace('/home');
-            }
-          });
+          this.$confirm('确定要退出登录?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            let result = this.logOut({});
+            let storage=window.sessionStorage;
+            storage.removeItem('userInfo');
+            this.$message({
+              type: 'success',
+              message: '退出成功!'
+            });
+              this.$router.push('/home');
+            })
+          }
         }
       }
-    }
 </script>
 
 <style scoped lang="stylus" ref="stylesheet/stylus">

@@ -120,7 +120,7 @@ router.beforeEach((to,from,next)=>{
       }
     })
   }else {
-    if(to.path == '/login' || to.path == '/login/register' || to.path == '/login/login'){
+    if(to.path == '/login' || to.path == '/register' || to.path == '/login/login'){
       next()
     }else {
       //console.log(window.sessionStorage.userInfo.id);

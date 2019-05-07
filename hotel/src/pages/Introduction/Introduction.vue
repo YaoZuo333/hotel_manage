@@ -57,6 +57,7 @@
       white-space: -o-pre-wrap;
       word-wrap: break-word;
       font-size 25px
+      background: rgba(184,167,143,1);
 
 
 </style>

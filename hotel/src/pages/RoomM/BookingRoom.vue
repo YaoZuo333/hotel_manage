@@ -44,7 +44,6 @@
 <style scoped lang="stylus" ref="stylesheet/stylus">
 .booking
   width 100%
-  height 100%
   background-color: #fff
   padding-top 1px
   position relative
