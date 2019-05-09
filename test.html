@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    const a = 1;
+    let obj = {a:1111111};
+    function add(){
+        let a = 3;
+        return a+b
+    }
+    console.dir(add);
+    console.log(this);
+    //let b = Object.getOwnPropertyDescriptor(this,"obj");
+    //console.log(b);
+</script>
+<script type="text/html">
+    var obj = {
+        a:1
+    };
+    Object.defineProperty(this,"obj",{
+      writable:false,
+      configurable:false
+    });
+    obj ={};
+    console.log(obj);//{a:1}
+    obj.b=3;
+    console.log(obj);//{a:1,b:3}
+
+    const obj1 = {
+        c:4
+    };
+    obj1.c = 5;
+    console.log(obj1);
+</script>
+<script type="text/html">
+    obj = {
+        fun:fun,
+        a:1
+    };
+    function fun() {
+        Object.defineProperty(this,"a",{
+            writable:false,
+            configurable:false,
+            set(v) {
+            }
+        })
+    }
+
+    console.log(obj.a);
+    obj.fun();
+    obj.a = 2;
+    console.log(obj.a);
+</script>
+</html>
